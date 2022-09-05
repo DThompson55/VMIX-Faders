@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP 
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    -->
+    <title>vMix Faders</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"> 
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <script type = "text/javascript"> 
+         // Prevent default action of right click in chromium. Replace with our menu.
+         window.addEventListener('contextmenu', (e) => {
+            e.preventDefault()
+            menu.popup(remote.getCurrentWindow())
+         }, false)
+
+         var maxVolume=100;
+
+    </script>
+    <div>
+      <div id="title" class="title is-3">vMix Faders</div>
+      <div id="initialize">
+        <div class="row">
+        	<div class="column"><div class="sliderHeader">M</div><div><input id="slider_0" class="vslider" type="range" /></div><div class="sliderValueClass" id="sliderValue_0">100</div></div>
+        	<div class="column"><div class="sliderHeader">1</div><div><input id="slider_1" class="vslider" type="range" /></div><div class="sliderValueClass" id="sliderValue_1">100</div></div>
+        	<div class="column"><div class="sliderHeader">2</div><div><input id="slider_2" class="vslider" type="range" /></div><div class="sliderValueClass" id="sliderValue_2">100</div></div>
+        	<div class="column"><div class="sliderHeader">3</div><div><input id="slider_3" class="vslider" type="range" /></div><div class="sliderValueClass" id="sliderValue_3">100</div></div>
+        	<div class="column"><div class="sliderHeader">4</div><div><input id="slider_4" class="vslider" type="range" /></div><div class="sliderValueClass" id="sliderValue_4">100</div></div>
+        	<div class="column"><div class="sliderHeader">5</div><div><input id="slider_5" class="vslider" type="range" /></div><div class="sliderValueClass" id="sliderValue_5">100</div></div>
+        	<div class="column"><div class="sliderHeader">6</div><div><input id="slider_6" class="vslider" type="range" /></div><div class="sliderValueClass" id="sliderValue_6">100</div></div>
+        	<div class="column"><div class="sliderHeader">7</div><div><input id="slider_7" class="vslider" type="range" /></div><div class="sliderValueClass" id="sliderValue_7">100</div></div>
+        	<div class="column"><div class="sliderHeader">8</div><div><input id="slider_8" class="vslider" type="range" /></div><div class="sliderValueClass" id="sliderValue_8">100</div></div>
+        </div>
+    </div>
+  </div>
+  </body>
+</html>
