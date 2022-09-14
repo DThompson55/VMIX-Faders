@@ -10,7 +10,6 @@ function sleep(ms) {
 
 async function send(params){ //function (response)
     var retval = axiosWrapper.vMixSend("/api", params)
-        console.log(params)
         if (params.Function == "Fade"){
             await sleep(params.Duration) 
         }

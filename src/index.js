@@ -23,7 +23,7 @@ const createWindow = () => {
     height: 600,
     webPreferences:{
       preload: path.join(__dirname, 'preload.js'),
-      devTools: false // This will disable dev tools debug
+      devTools: true // This will disable dev tools debug
     }
   });
 
@@ -37,8 +37,7 @@ const createWindow = () => {
     console.log("Loaded")
     try {
     controller.connect((ctx)=>{
-       mainWindow.webContents.send('VMIX_STATUS', ctx.vMixStatus);
-       fs.writeFile("currentVMIX.xml", JSON.stringify(ctx), err=>{if (err) console.log("fsError",err)});
+       mainWindow.webContents.send('VMIX_STATUS', JSON.stringify(ctx.faders));
     })
   } catch(e){console.log(e)}
   })
@@ -72,6 +71,7 @@ ipcMain.on('faderEvent', (event, arg) => {
   controller.updateFader(arg);
   event.returnValue = "ok";
 })
+
 
 
 

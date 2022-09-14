@@ -6,7 +6,10 @@ const requestListener = function (req, res) {
     console.log(req.url)
     res.setHeader("Content-Type", "text/xml");
     res.writeHead(200);
-    res.end(vMixCfg);
+    if ( req.url === "/api")
+        res.end(vMixCfg);
+    else 
+        res.end("OK");
 }
 
 const server = http.createServer(requestListener);
