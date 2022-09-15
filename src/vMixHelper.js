@@ -13,7 +13,7 @@ async function send(params){ //function (response)
         if (params.Function == "Fade"){
             await sleep(params.Duration) 
         }
-        await sleep(process.env["VMIX_DELAY"] || 10) 
+        await sleep(process.env["VMIX_DELAY"] || 100) 
         // vMix apparently needs some time to process, 
         // but how much time? Do I need to pass a time in?
         // maybe it just needs to wait for the fade to complete
@@ -21,7 +21,6 @@ async function send(params){ //function (response)
     }
 
 async function connect(callback){//{httpResponse, status}
-
         try {
             response = await send({})
             parser.parseString(response.data, (err,result) => {
@@ -34,16 +33,6 @@ async function connect(callback){//{httpResponse, status}
             callback({vMixCfg:null,vMixStatus:"vMix Not Connected?"})
             }
         }
+        
 
-async function resetPowerPoints(vmixCfg){
-    var r = vmixCfg.vMixCfg.vmix.inputs[0].input;
-    for (var i in r){
-        var x = r[i]['$']
-        if (x.type == "PowerPoint"){
-            var p = { "Function":"SetPosition","Value":"0","Input":x.number }
-            await send(p)
-        }
-    }
-}        
-
-module.exports = {connect:connect, send:send, resetPowerPoints, resetPowerPoints}
+module.exports = {connect:connect, send:send}
