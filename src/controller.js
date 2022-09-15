@@ -35,6 +35,12 @@ function getStatus(){
 function updateFader(arg){
     dbValue = faderValues.getDBValue(arg.value);
     vMix.send({"Function":"setVolume", "Input":arg.key, "Value":dbValue})
+    if (process.env["VMIX_TRACE"]){
+        connect( cfg =>{
+            
+        })
+    }
+
 }
 
 module.exports = {connect:connect, getStatus: getStatus, updateFader, updateFader}
