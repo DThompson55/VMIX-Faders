@@ -105,30 +105,30 @@ db[2]  = 0.00200000000003;
 db[1]  = 0.00100000000003;
 db[0]  = 0.0;
 
+for (var i = 1; i < 127; i++){
+	if (i ==1)
+		db[i] = {"m":db[i],"l":(db[i]+db[i-1])/2,"h":(db[i]+db[i+1])/2}	
+	else
+		db[i] = {"m":db[i],"l":(db[i]+db[i-1].m)/2,"h":(db[i]+db[i+1])/2}	
+}
 
 function getDBValue(n){
- return db[n];
+ return db[n].m;
 }
 
 function getFaderValue(x){
-	var dAbs = 100;
-	for (var m = 1; m < 101; m++){
-
-		// if ( m == 0) break;
-		y1 = db[m];
-		y0 = db[m-1];
-		d1 = x-y1;
-		d0 = x-y0;
-		d1Abs = Math.abs(d1)
-		d0Abs = Math.abs(d0)
-		if (d0Abs < d1Abs){
-			m = m-1;
-			break;
-		} 
+	var m = 64;
+	var n = m;
+	for (var i = 0; i < 9 ; i++){
+		n = Math.floor(n/2)
+		if (x < db[m].l) m = m - n;
+		else if (x > db[m].h) m = m + n;
+		else return m
 	}
 	return m
 }
 
+//for ( i in db ) console.log(i,db[i])
 // console.log(getDBValue(0))
 // console.log(getDBValue(50))
 // console.log(getDBValue(100))
@@ -138,6 +138,5 @@ function getFaderValue(x){
 // console.log(50,getFaderValue(50))
 // console.log(33,getFaderValue(33))
 // console.log(0.286416,getFaderValue(0.286416))
-
 
 module.exports = {getDBValue:getDBValue, getFaderValue: getFaderValue}
