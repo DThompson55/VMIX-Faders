@@ -18,7 +18,6 @@ console.log("CONNECTING...");
                 if (r.volume ) r.volume = parseInt(r.volume)
                 if (!isNaN(r.volume)){
                  faderValue = faderValues.getFaderValue(r.volume);
-                 console.log("from VMix label",r.number,"volume",r.volume,"faderValue",faderValue)
                  faders.push({"label":r.number,"id":"fader"+r.number,"title":r.shortTitle,"volume":r.volume,"faderValue":faderValue,"mute":r.muted})
                 }
         }
@@ -34,12 +33,14 @@ function getStatus(){
 
 function updateFader(arg){
     dbValue = faderValues.getDBValue(arg.value);
-    vMix.send({"Function":"setVolume", "Input":arg.key, "Value":dbValue})
+    vMix.send({"Function":"SetVolume", "Input":arg.key, "Value":arg.value, "IgnoreDB":dbValue})
     if (process.env["VMIX_TRACE"]){
         connect( cfg =>{
-            
-        })
-    }
+            for (i in cfg.faders)
+                if (cfg.faders[i].label == arg.key)
+                console.log(cfg.faders[i].label,"|",arg.value,"|",cfg.faders[i].volume)
+            })
+        }
 
 }
 

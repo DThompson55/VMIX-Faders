@@ -14,7 +14,7 @@
 
   function updateFaderValue(i){
   	// convert to 0-100 here
-      ipc.sendSync('faderEvent',{"key":(i.id).slice(7),"value":i.value});
+      ipc.sendSync('faderEvent',{"key":(i.id).slice(5),"value":i.value});
   }
 var db = [];
 
