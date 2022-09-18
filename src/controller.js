@@ -33,7 +33,7 @@ function getStatus(){
 
 function updateFader(arg){
     dbValue = faderValues.getDBValue(arg.value);
-    vMix.send({"Function":"SetVolume", "Input":arg.key, "Value":arg.value, "IgnoreDB":dbValue})
+    vMix.send({"Function":"SetVolume", "Input":arg.key, "Value":Number(arg.value)+1, "IgnoreDB":dbValue})
     if (process.env["VMIX_TRACE"]){
         connect( cfg =>{
             for (i in cfg.faders)
