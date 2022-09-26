@@ -1,6 +1,9 @@
 const axios = require('axios').default;
 
-var host = "http://localhost:8088"; // could parameterize this TTD
+var host = process.env["VMIX_PROXY"] || "http://localhost:8088"; // could parameterize this TTD
+
+console.log("VMIX HOST IS ",host)
+
 
 async function vMixSend(endpoint,params) {
       const response = axios.get(host+endpoint, {params})

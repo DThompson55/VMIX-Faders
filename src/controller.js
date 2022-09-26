@@ -3,7 +3,7 @@ const vMix = require('./vMixHelper.js')
 const faderValues = require('./fader2db.js')
 
 function connect(callback){ //{vMixCfg:result, vMixStatus:"Connected to vMix"}
-console.log("CONNECTING...");
+//console.log("CONNECTING...");
     vMix.connect(cfg=>{
         try {
         iFaders = 0;
@@ -17,6 +17,7 @@ console.log("CONNECTING...");
                 let r = input[i]['$'];
                 if (r.volume ) r.volume = parseInt(r.volume)
                 if (!isNaN(r.volume)){
+//                    console.log(r)
                  faderValue = faderValues.getFaderValue(r.volume);
                  faders.push({"label":r.number,"id":"fader"+r.number,"title":r.shortTitle,"volume":r.volume,"faderValue":faderValue,"mute":r.muted})
                 }
@@ -31,17 +32,25 @@ function getStatus(){
     return vMix.status;
 }
 
-function updateFader(arg){
-    dbValue = faderValues.getDBValue(arg.value);
-    vMix.send({"Function":"SetVolume", "Input":arg.key, "Value":Number(arg.value)+1, "IgnoreDB":dbValue})
-    if (process.env["VMIX_TRACE"]){
-        connect( cfg =>{
-            for (i in cfg.faders)
-                if (cfg.faders[i].label == arg.key)
-                console.log(cfg.faders[i].label,"|",arg.value,"|",cfg.faders[i].volume)
-            })
-        }
+dbBag = [];
 
+function getDB_Bag(){
+    return dbBag;
 }
 
-module.exports = {connect:connect, getStatus: getStatus, updateFader, updateFader}
+function updateFader(arg){
+    nValue = Number(arg.value)+1
+    dbValue = faderValues.getDBValue(nValue);
+    vMix.send({"Function":"SetVolume", "Input":arg.key, "Value":nValue, "IgnoreDB":dbValue})
+    if (process.env["VMIX_TRACE"]){
+        connect( cfg =>{
+            for (i in cfg.faders) {
+                if (cfg.faders[i].label == arg.key){
+                    dbBag[nValue] = {"n":nValue,"db":dbValue,"vmix":cfg.faders[i].volume}
+                }
+                }
+            })
+        }
+}
+
+module.exports = {connect:connect, getStatus: getStatus, updateFader, updateFader, getdbbag:getDB_Bag}
