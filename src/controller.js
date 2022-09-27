@@ -46,7 +46,7 @@ function updateFader(arg){
         connect( cfg =>{
             for (i in cfg.faders) {
                 if (cfg.faders[i].label == arg.key){
-                    dbBag[nValue] = {"n":nValue,"db":dbValue,"vmix":cfg.faders[i].volume}
+                    dbBag[nValue] = {"n":nValue,"db":dbValue,"vmix":cfg.faders[i].volume,"vmixDb":cfg.faders[i].gainDb}
                 }
                 }
             })
