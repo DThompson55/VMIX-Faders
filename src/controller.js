@@ -19,7 +19,7 @@ function connect(callback){ //{vMixCfg:result, vMixStatus:"Connected to vMix"}
                 if (!isNaN(r.volume)){
 //                    console.log(r)
                  faderValue = faderValues.getFaderValue(r.volume);
-                 faders.push({"label":r.number,"id":"fader"+r.number,"title":r.shortTitle,"volume":r.volume,"faderValue":r.faderValue,"myFaderValue":faderValue,"mute":r.muted})
+                 faders.push({"label":r.number,"id":"fader"+r.number,"title":r.shortTitle,"volume":r.volume,"gainDb":r.gainDb,"myFaderValue":faderValue,"mute":r.muted})
                 }
         }
         cfg.faders = faders;
