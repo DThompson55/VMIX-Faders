@@ -19,7 +19,7 @@ function connect(callback){ //{vMixCfg:result, vMixStatus:"Connected to vMix"}
                 if (!isNaN(r.volume)){
 //                    console.log(r)
                  faderValue = faderValues.getFaderValue(r.volume);
-                 faders.push({"label":r.number,"id":"fader"+r.number,"title":r.shortTitle,"volume":r.volume,"gainDb":r.gainDb,"myFaderValue":faderValue,"mute":r.muted})
+                 faders.push({"label":r.number,"id":"fader"+r.number,"title":r.shortTitle,"volume":r.volume,"faderValue":faderValue,"mute":r.muted})
                 }
         }
         cfg.faders = faders;
@@ -46,8 +46,7 @@ function updateFader(arg){
         connect( cfg =>{
             for (i in cfg.faders) {
                 if (cfg.faders[i].label == arg.key){
-                     console.log(cfg.faders[i])
-                    dbBag[nValue] = {"n":nValue,"db":dbValue,"vmix":cfg.faders[i].volume,"faderValue":cfg.faders[i].faderValue}
+                    dbBag[nValue] = {"n":nValue,"myDb":dbValue,"vmixVolume":cfg.faders[i].volume,"vmixDb":cfg.faders[i].gainDb}
                 }
                 }
             })
