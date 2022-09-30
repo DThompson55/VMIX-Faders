@@ -19,11 +19,11 @@ const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
 //    alwaysOnTop: true,
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 800,
     webPreferences:{
       preload: path.join(__dirname, 'preload.js'),
-      devTools: true // This will disable dev tools debug
+      devTools: false // This will disable dev tools debug
     }
   });
 
@@ -69,8 +69,8 @@ app.on('activate', () => {
 // code. You can also put them in separate files and import them here.
 
 ipcMain.on('faderEvent', (event, arg) => {
-  controller.updateFader(arg);
-  event.returnValue = "ok";
+  retval = controller.updateFader(arg);
+  event.returnValue = retval;
 })
 
 

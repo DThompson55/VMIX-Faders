@@ -40,17 +40,21 @@ function getDB_Bag(){
 
 function updateFader(arg){
     nValue = Number(arg.value)+1
-    dbValue = faderValues.getDBValue(nValue);
+    dbValue = faderValues.getVMixDB(nValue);
     vMix.send({"Function":"SetVolume", "Input":arg.key, "Value":nValue, "IgnoreDB":dbValue})
     if (process.env["VMIX_TRACE"]){
         connect( cfg =>{
             for (i in cfg.faders) {
                 if (cfg.faders[i].label == arg.key){
-                    dbBag[nValue] = {"n":nValue,"myDb":dbValue,"vmixVolume":cfg.faders[i].volume,"vmixDb":cfg.faders[i].gainDb}
+                    dbBag[nValue] = {"n":nValue,"mydb":dbValue,"vmix":cfg.faders[i].volume,"vmixDb":cfg.faders[i].gainDb}
                 }
                 }
             })
         }
+        arg.dbValue = dbValue
+        arg.vmixValue = faderValues.getvMixVolumeValue(nValue)
+        arg.nValue = nValue;
+    return (arg)
 }
 
 module.exports = {connect:connect, getStatus: getStatus, updateFader, updateFader, getdbbag:getDB_Bag}

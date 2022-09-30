@@ -1,142 +1,74 @@
-var db = [];
+var sliderPosition = require('./vmixVolumes.js').sliderPosition;
 
-for (var i = 100; i < 129; i++){
-	db[i]= 100.0;	
-}
-db[100]= 100.0;
-db[99] = 90.546433333;
-db[98] = 81.092866666;
-db[97] = 71.6393;		// -3db
-db[96] = 65.159743333;
-db[95] = 58.6801866666;
-db[94] = 52.20063;		// -6db
-db[93] = 47.13877;
-db[92] = 42.07691;
-db[91] = 37.01505;		//-9db
-db[90] = 31.64063; 		//-10db
-db[89] = 28.526155;
-db[88] = 25.41168;		//-12db
-db[87] = 23.3364;
-db[86] = 21.26112;
-db[85] = 19.18584;
-db[84] = 17.11056;
-db[83] = 15.03528;
-db[82] = 12.96;			//-18db
-db[81] = 11.397248;
-db[80] = 9.834496; 		//-20db
-db[79] = 9.0205572;
-db[78] = 8.2066184;
-db[77] = 7.3926796;
-db[76] = 6.5787408;
-db[75] = 5.764802;		//-25db
-db[74] = 5.2341808;
-db[73] = 4.7035596;
-db[72] = 4.1729384;
-db[71] = 3.6423172;
-db[70] = 3.111696;  	//-30db
-db[69] = 2.905384;
-db[68] = 2.699072;
-db[67] = 2.49276;
-db[66] = 2.286448;
-db[65] = 2.080136;
-db[64] = 1.873824;
-db[63] = 1.667512;
-db[62] = 1.4612;
-db[61] = 1.254888;
-db[60] = 1.048576; //-40db
-db[59] = 0.976896;
-db[58] = 0.905216;
-db[57] = 0.833536;
-db[56] = 0.761856;
-db[55] = 0.690176;
-db[54] = 0.618496;
-db[53] = 0.546816;
-db[52] = 0.475136;
-db[51] = 0.403456;
-db[50] = 0.331776; //-50
-db[49] = 0.309096;
-db[48] = 0.286416;
-db[47] = 0.263736;
-db[46] = 0.241056;
-db[45] = 0.218376;
-db[44] = 0.195696;
-db[43] = 0.173016;
-db[42] = 0.150336;
-db[41] = 0.127656;
-db[40] = 0.104976; //-60
-db[39] = 0.0980291809;
-db[38] = 0.09108236181;
-db[37] = 0.084135542727;
-db[36] = 0.077188723636;
-db[35] = 0.070241904545;
-db[34] = 0.063295085454;
-db[33] = 0.056348266363;
-db[32] = 0.049401447272;
-db[31] = 0.0424546281818;
-db[30] = 0.03550780909;   // little bump here
-db[29] = 0.02856099;
-db[28] = 0.0275840957895;
-db[27] = 0.0266072015789;
-db[26] = 0.0256303073684;
-db[25] = 0.0246534131;
-db[24] = 0.023676518947;
-db[23] = 0.0226996247368;
-db[22] = 0.0217227305263;
-db[21] = 0.020745836315;
-db[20] = 0.019768942105;
-db[19] = 0.0187920478947;
-db[18] = 0.0178151536842;
-db[17] = 0.016838259473;
-db[16] = 0.015861365263;
-db[15] = 0.0148844710526;
-db[14] = 0.0139075768421;
-db[13] = 0.0129306826316;
-db[12] = 0.011953788421;
-db[11] = 0.0109768942105;
-db[10] = 0.01;				//-90
-db[9]  = 0.009;
-db[8]  = 0.008;
-db[7]  = 0.007;
-db[6]  = 0.006;
-db[5]  = 0.005;
-db[4]  = 0.004;
-db[3]  = 0.00300000000003;
-db[2]  = 0.00200000000003;
-db[1]  = 0.00100000000003;
-db[0]  = 0.0;
+var convert = [
+{"db": 0, "voltage":1.00,  "power":1.00 },
+{"db":-1, "voltage":0.891, "power":0.794},
+{"db":-2, "voltage":0.794, "power":0.631},
+{"db":-3, "voltage":0.707, "power":0.500},
+{"db":-4, "voltage":0.631, "power":0.398},
+{"db":-5, "voltage":0.562, "power":0.361},
+{"db":-6, "voltage":0.500, "power":0.250},
+{"db":-7, "voltage":0.477, "power":0.224},
+{"db":-8, "voltage":0.398, "power":0.158},
+{"db":-9, "voltage":0.355, "power":0.125},
+{"db":-10, "voltage":0.316, "power":0.100},
+{"db":-12, "voltage":0.250, "power":0.063},
+{"db":-15, "voltage":0.178, "power":0.031},
+{"db":-30, "voltage":0.032, "power":0.001},
+{"db":-40, "voltage":0.010, "power":0.000},
+{"db":-50, "voltage":0.003, "power":0.000}]
 
-for (var i = 1; i < 127; i++){
-	if (i ==1)
-		db[i] = {"m":db[i],"l":(db[i]+db[i-1])/2,"h":(db[i]+db[i+1])/2}	
-	else
-		db[i] = {"m":db[i],"l":(db[i]+db[i-1].m)/2,"h":(db[i]+db[i+1])/2}	
+
+function getvMixVolumeValue(n){ 
+ return sliderPosition[n].m;
 }
 
-function getDBValue(n){
- return db[n].m;
+function getVMixDB(n){ 
+ var v = getvMixVolumeValue(n)/100
+ for (var i in convert){
+ 	// or they could be using power instead of voltage
+ 	if (convert[i].voltage < v)
+ 		return convert[i-1].db;
+ } 
+ return -60;
 }
 
-function getFaderValue(x){
+function getVMixDBPower(n){ 
+ var v = getvMixVolumeValue(n)/100
+ for (var i in convert){
+ 	// or they could be using power instead of voltage
+ 	if (convert[i].power < v)
+ 		return convert[i-1].db;
+ } 
+ return -60;
+}
+
+function getFaderValue(x){ // returns the slider value for a given vMix Volume
 	var m = 64;
 	var n = m;
 	for (var i = 0; i < 9 ; i++){
 		n = Math.floor(n/2)
-		if (x < db[m].l) m = m - n;
-		else if (x > db[m].h) m = m + n;
+		if (x < sliderPosition[m].l) m = m - n;
+		else if (x > sliderPosition[m].h) m = m + n;
 		else return m
 	}
 	return m
 }
 
 //for ( i in db ) console.log(i,db[i])
-// console.log(getDBValue(0))
-// console.log(getDBValue(50))
-// console.log(getDBValue(100))
+console.log("look up vMixVolumes")
+console.log(getvMixVolumeValue(0))
+console.log(getvMixVolumeValue(50))
+console.log(getvMixVolumeValue(100))
+console.log("look up vMixDB")
+console.log(getVMixDB(0))
+console.log(getVMixDB(50))
+console.log(getVMixDB(100))
+console.log("look up faders from vmix values")
+console.log(75,getFaderValue(75))
+console.log(66,getFaderValue(66))
+console.log(50,getFaderValue(50))
+console.log(33,getFaderValue(33))
+console.log(0.286416,getFaderValue(0.286416))
 
-// console.log(75,getFaderValue(75))
-// console.log(66,getFaderValue(66))
-// console.log(50,getFaderValue(50))
-// console.log(33,getFaderValue(33))
-// console.log(0.286416,getFaderValue(0.286416))
-
-module.exports = {getDBValue:getDBValue, getFaderValue: getFaderValue}
+module.exports = {getvMixVolumeValue:getvMixVolumeValue, getFaderValue: getFaderValue,getVMixDB:getVMixDB, getVMixDBPower:getVMixDBPower}
